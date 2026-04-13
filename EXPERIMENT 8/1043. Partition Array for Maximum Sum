@@ -1,0 +1,61 @@
+class Solution {
+
+    int[] dp;
+    int n;
+
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        
+        n=arr.length;
+
+        // int[] prefixMax=new int[n];
+        // prefixMax[0]=arr[0];
+
+        // for(int i=1;i<n;i++){
+        //     prefixMax[i]=Math.max(arr[i],prefixMax[i-1]);
+        // }
+        
+        // for(int i=0;i<n;i++){
+        //     System.out.print(prefixMax[i]+" ");
+        // }
+
+        // int[] ans=new int[n];
+
+        dp=new int[n+1];
+
+        Arrays.fill(dp,-1);
+
+        return solve(0,k,arr);
+
+        // int sum=0;
+
+        // for(int i:ans){
+        //     sum+=i;
+        // }
+        // return sum;
+    }
+    public int solve(int idx,int k,int[] arr){
+
+        if(idx==n){
+            return 0;
+        }
+        if(dp[idx]!=-1){
+            return dp[idx];
+        }
+
+        int skip=arr[idx]+solve(idx+1,k,arr);
+
+        int pick=0;
+
+        int temp=0;
+
+        for(int j=idx;j<Math.min(idx+k,n);j++){
+
+            temp=Math.max(temp,arr[j]);
+
+            int len=j-idx+1;
+
+            pick=Math.max(pick,temp*(len)+solve(j+1,k,arr));
+        }
+        return dp[idx]=Math.max(pick,skip);
+    }
+}
